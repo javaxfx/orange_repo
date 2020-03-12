@@ -10,12 +10,7 @@ declare function xf:ETUClientLocationTransformationRechargeReq($Command as eleme
         <ns0:DealerRechargePaymentRequest>
             <RequestId>{ concat("ETU_", data($Command/EXTREFNUM)) }</RequestId>
             <RequestOrigin>30</RequestOrigin>
-                        	<RequestDate>{if (data($Command/DATE) = "") then
-                                			("")
-                            			else 
-                                			xs:dateTime($Command/DATE)
-                            				 }
-            </RequestDate>
+                        	<RequestDate>{fn:current-date()}</RequestDate>
             <RequestType>0</RequestType>
             <RequestOption>
                 {
