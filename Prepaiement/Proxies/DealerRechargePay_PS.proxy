@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ser:proxyServiceEntry xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:oper="http://xmlns.oracle.com/servicebus/proxy/operations" xmlns:oper1="http://xmlns.oracle.com/servicebus/operations" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aler="http://xmlns.oracle.com/servicebus/monitoring/alert" xmlns:con="http://xmlns.oracle.com/servicebus/monitoring/alert/condition">
+    <ser:coreEntry isAutoPublish="false">
+        <ser:description/>
+        <ser:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config">
+            <con:wsdl ref="Common/Resources/WSDLs/NGIN/meditelETU"/>
+            <con:port>
+                <con:name>meditelETUWS</con:name>
+                <con:namespace>http://www.ptinovacao.pt/ws/</con:namespace>
+            </con:port>
+            <con:selector type="SOAP body"/>
+            <con:WSI-compliant>false</con:WSI-compliant>
+        </ser:binding>
+        <oper:operations enabled="true">
+            <oper:messageTracing enabled="false">
+                <oper1:detailsLevel>terse</oper1:detailsLevel>
+                <oper1:maxSize>8192</oper1:maxSize>
+            </oper:messageTracing>
+            <oper:monitoring enabled="true" aggregationInterval="1440"/>
+            <oper:sla-alerting enabled="true" level="normal"/>
+        </oper:operations>
+        <ser:ws-policy xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config">
+            <ser:binding-mode>wsdl-policy-attachments</ser:binding-mode>
+        </ser:ws-policy>
+        <ser:invoke ref="Prepaiement/Proxies/DealerRechargePay_PS" xsi:type="con:PipelineRef" xmlns:con="http://www.bea.com/wli/sb/pipeline/config"/>
+        <ser:xqConfiguration>
+            <ser:snippetVersion>1.0</ser:snippetVersion>
+        </ser:xqConfiguration>
+    </ser:coreEntry>
+    <ser:endpointConfig xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config">
+        <tran:provider-id>http</tran:provider-id>
+        <tran:inbound>true</tran:inbound>
+        <tran:URI>
+            <env:value>/DealerRechargePayment</env:value>
+        </tran:URI>
+        <tran:inbound-properties/>
+        <tran:all-headers>true</tran:all-headers>
+        <tran:provider-specific xsi:type="http:HttpEndPointConfiguration">
+            <http:inbound-properties>
+                <http:client-authentication xsi:type="http:HttpBasicAuthenticationType"/>
+            </http:inbound-properties>
+        </tran:provider-specific>
+    </ser:endpointConfig>
+    <aler:alertRules>
+        <aler:alertRule name="SLA_min_DealerRechargePay_PS" enabled="true">
+            <aler:description/>
+            <aler:startTime>05:00:00.000Z</aler:startTime>
+            <aler:endTime>23:00:00.000Z</aler:endTime>
+            <aler:frequency>every-time</aler:frequency>
+            <aler:severity>major</aler:severity>
+            <aler:stopProcessing>false</aler:stopProcessing>
+            <aler:condition aggregation-interval="240">
+                <con:monCondExpr>
+                    <con:function>min</con:function>
+                    <con:lhs>Transport.response-time</con:lhs>
+                    <con:operator>></con:operator>
+                    <con:rhs>30000</con:rhs>
+                </con:monCondExpr>
+            </aler:condition>
+            <aler1:alertDestination ref="Common/Resources/Alerts/Echange_AD" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config" xmlns:aler1="http://xmlns.oracle.com/servicebus/monitoring/alert"/>
+            <aler:summary>SLA_min_DealerRechargePay_PS</aler:summary>
+        </aler:alertRule>
+        <aler:alertRule name="SLA_max_DealerRechargePay_PS" enabled="true">
+            <aler:description/>
+            <aler:startTime>05:00:00.000Z</aler:startTime>
+            <aler:endTime>23:00:00.000Z</aler:endTime>
+            <aler:frequency>every-time</aler:frequency>
+            <aler:severity>major</aler:severity>
+            <aler:stopProcessing>false</aler:stopProcessing>
+            <aler:condition aggregation-interval="240">
+                <con:monCondExpr>
+                    <con:function>max</con:function>
+                    <con:lhs>Transport.response-time</con:lhs>
+                    <con:operator>></con:operator>
+                    <con:rhs>60000</con:rhs>
+                </con:monCondExpr>
+            </aler:condition>
+            <aler1:alertDestination ref="Common/Resources/Alerts/Echange_AD" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config" xmlns:aler1="http://xmlns.oracle.com/servicebus/monitoring/alert"/>
+            <aler:summary>SLA_max_DealerRechargePay_PS</aler:summary>
+        </aler:alertRule>
+        <aler:alertRule name="SLA_average_DealerRechargePay_PS" enabled="true">
+            <aler:description/>
+            <aler:startTime>05:00:00.000Z</aler:startTime>
+            <aler:endTime>23:00:00.000Z</aler:endTime>
+            <aler:frequency>every-time</aler:frequency>
+            <aler:severity>major</aler:severity>
+            <aler:stopProcessing>false</aler:stopProcessing>
+            <aler:condition aggregation-interval="240">
+                <con:monCondExpr>
+                    <con:function>average</con:function>
+                    <con:lhs>Transport.response-time</con:lhs>
+                    <con:operator>></con:operator>
+                    <con:rhs>45000</con:rhs>
+                </con:monCondExpr>
+            </aler:condition>
+            <aler1:alertDestination ref="Common/Resources/Alerts/Echange_AD" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config" xmlns:aler1="http://xmlns.oracle.com/servicebus/monitoring/alert"/>
+            <aler:summary>SLA_average_DealerRechargePay_PS</aler:summary>
+        </aler:alertRule>
+        <aler:alertRule name="SLA_error-count_DealerRechargePay_PS" enabled="true">
+            <aler:description/>
+            <aler:startTime>05:00:00.000Z</aler:startTime>
+            <aler:endTime>23:00:00.000Z</aler:endTime>
+            <aler:frequency>every-time</aler:frequency>
+            <aler:severity>major</aler:severity>
+            <aler:stopProcessing>false</aler:stopProcessing>
+            <aler:condition aggregation-interval="240">
+                <con:monCondExpr>
+                    <con:function>count</con:function>
+                    <con:lhs>Transport.error-count</con:lhs>
+                    <con:operator>></con:operator>
+                    <con:rhs>10</con:rhs>
+                </con:monCondExpr>
+            </aler:condition>
+            <aler1:alertDestination ref="Common/Resources/Alerts/Echange_AD" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config" xmlns:aler1="http://xmlns.oracle.com/servicebus/monitoring/alert"/>
+            <aler:summary>SLA_error-count_DealerRechargePay_PS</aler:summary>
+        </aler:alertRule>
+    </aler:alertRules>
+</ser:proxyServiceEntry>

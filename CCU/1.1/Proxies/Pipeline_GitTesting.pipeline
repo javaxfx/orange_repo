@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:coreEntry>
+        <con:binding type="Native REST" xsi:type="con:NativeRestBindingType"/>
+        <con:xqConfiguration>
+            <con:snippetVersion>1.0</con:snippetVersion>
+        </con:xqConfiguration>
+    </con:coreEntry>
+    <con:router>
+        <con:pipeline type="request" name="request-a004b01.3e44f686.0.170cf66b142.N7f8f">
+            <con:stage id="_StageId-a004b01.3e44f686.0.170cf66b142.N7ecb" name="Stage1_Request" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config">
+                <con:context/>
+                <con:actions>
+                    <con3:assign varName="currentDatetime" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con6="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-a004b01.3e44f686.0.170cf66b142.N7eca</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>&lt;a>{fn:current-dateTime()}&lt;/a></con2:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con1:log xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config">
+                        <con2:id>_ActionId-a004b01.3e44f686.0.170cf66b142.N7ec9</con2:id>
+                        <con1:logLevel>info</con1:logLevel>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;root>
+{$body}
+&lt;/root></con2:xqueryText>
+                        </con1:expr>
+                        <con1:message>[Orange][Body before transformation]</con1:message>
+                    </con1:log>
+                    <con1:ifThenElse>
+                        <con2:id>_ActionId-a004b01.3e44f686.0.170cf66b142.N7ec8</con2:id>
+                        <con1:case id="_BranchId-a004b01.3e44f686.0.170cf66b142.N7ec7">
+                            <con1:condition>
+                                <con2:xqueryText>fn:local-name($body/*)!='publicKeyFindResponse'</con2:xqueryText>
+                            </con1:condition>
+                            <con1:actions>
+                                <con3:insert varName="inbound" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:env="http://www.bea.com/wli/config/env" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                                    <con2:id>_ActionId-a004b01.3e44f686.0.170cf66b142.N7ec4</con2:id>
+                                    <con3:location>
+                                        <con2:xpathText>./ctx:transport/ctx:response</con2:xpathText>
+                                    </con3:location>
+                                    <con3:where>first-child</con3:where>
+                                    <con3:expr>
+                                        <con2:xqueryText>&lt;http:http-response-code>422&lt;/http:http-response-code></con2:xqueryText>
+                                    </con3:expr>
+                                </con3:insert>
+                            </con1:actions>
+                        </con1:case>
+                        <con1:default>
+                            <con3:replace contents-only="true" varName="body" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports">
+                                <con2:id>_ActionId-a004b01.3e44f686.0.170cf66b142.N7ec1</con2:id>
+                                <con3:location>
+                                    <con2:xpathText>.</con2:xpathText>
+                                </con3:location>
+                                <con3:expr>
+                                    <con2:xqueryText>fn-bea:binary-to-text($body/*, 'UTF-8')</con2:xqueryText>
+                                </con3:expr>
+                            </con3:replace>
+                            <con1:javaScript>
+                                <con2:id>_ActionId-a004b01.3e44f686.0.170cf66b142.N7ec0</con2:id>
+                                <con1:script>var json = JSON.parse(process.body);
+process.body = json.PublicKey;</con1:script>
+                            </con1:javaScript>
+                        </con1:default>
+                    </con1:ifThenElse>
+                    <con1:log xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config">
+                        <con2:id>_ActionId-a004b01.3e44f686.0.170cf66b142.N7ebf</con2:id>
+                        <con1:logLevel>info</con1:logLevel>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;root>
+{$body}
+&lt;/root></con2:xqueryText>
+                        </con1:expr>
+                        <con1:message>[Orange][Body after transformation]</con1:message>
+                    </con1:log>
+                    <con1:report xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config">
+                        <con2:id>_ActionId-a004b01.3e44f686.0.170cf66b142.N7ebe</con2:id>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;ReportResponse>
+{$body}
+&lt;/ReportResponse></con2:xqueryText>
+                        </con1:expr>
+                        <con1:labels>
+                            <con1:key>messageId</con1:key>
+                            <con1:varName>msgId</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                    </con1:report>
+                    <con1:log xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config">
+                        <con2:id>_ActionId-a004b01.3e44f686.0.170cf66b142.N7ebc</con2:id>
+                        <con1:logLevel>info</con1:logLevel>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;root>
+&lt;/root></con2:xqueryText>
+                        </con1:expr>
+                        <con1:message>[Orange][Last]</con1:message>
+                    </con1:log>
+                    <con3:transport-headers xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:env="http://www.bea.com/wli/config/env" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-a004b01.3e44f686.0.170cf66b142.N7ebd</con2:id>
+                        <con3:header-set>inbound-response</con3:header-set>
+                        <con3:header name="Content-Type" value="expression">
+                            <con2:xqueryText>'application/json; charset=utf-8'</con2:xqueryText>
+                        </con3:header>
+                    </con3:transport-headers>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="response" name="response-a004b01.3e44f686.0.170cf66b142.N7f8e"/>
+        <con:flow>
+            <con:pipeline-node name="Pipeline Pair Node1">
+                <con:request>request-a004b01.3e44f686.0.170cf66b142.N7f8f</con:request>
+                <con:response>response-a004b01.3e44f686.0.170cf66b142.N7f8e</con:response>
+            </con:pipeline-node>
+        </con:flow>
+    </con:router>
+</con:pipelineEntry>

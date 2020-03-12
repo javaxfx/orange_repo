@@ -1,0 +1,16 @@
+<!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Oracle JAX-WS 2.1.5. --><xs:schema version="1.0" targetNamespace="http://medipps/EPaymentWS/ETUClientLocation" xmlns:tns="http://medipps/EPaymentWS/ETUClientLocation" xmlns:ns1="java:com.edinfor.pps.dto" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:import namespace="java:com.edinfor.pps.dto" schemaLocation="ETUClientLocation1.xsd"/>
+
+<xs:element name="Exception" type="tns:Exception"/>
+
+<xs:element name="etuClientLocalReqDTO" nillable="true" type="ns1:etuClientLocalReqDTO"/>
+
+<xs:element name="result" nillable="true" type="ns1:etuClientLocalRespDTO"/>
+
+<xs:complexType name="Exception">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

@@ -1,0 +1,6 @@
+<view_states>
+   <function arity="1" name="ETUClientLocationTransformationRechargeReq">
+      <source_tree_view last.visible.row="0" last.visible.path="/sourceRoot[[0]]/NO_NAME[[0]]" first.visible.path="/sourceRoot[[0]]/NO_NAME[[0]]" expanded.paths="" first.visible.row="0" selected.paths="/sourceRoot[[0]]/NO_NAME[[0]]"/>
+      <target_tree_view last.visible.row="17" last.visible.path="/TargetRoot[[0]]/DealerRechargePaymentRequest[[0]]/CustomerMSISDN[[8]]" first.visible.path="/TargetRoot[[0]]/DealerRechargePaymentRequest[[0]]" expanded.paths="/TargetRoot[[0]]/DealerRechargePaymentRequest[[0]]&#xA;/TargetRoot[[0]]/DealerRechargePaymentRequest[[0]]/RequestDate[[2]]&#xA;/TargetRoot[[0]]/DealerRechargePaymentRequest[[0]]/RequestDate[[2]]/Conditional[[0]]&#xA;/TargetRoot[[0]]/DealerRechargePaymentRequest[[0]]/RequestOption[[4]]&#xA;/TargetRoot[[0]]/DealerRechargePaymentRequest[[0]]/RequestOption[[4]]/Conditional[[0]]&#xA;/TargetRoot[[0]]/DealerRechargePaymentRequest[[0]]/RequestOption[[4]]/Conditional[[0]]/Conditional[[1]]" first.visible.row="0" selected.paths="/TargetRoot[[0]]/DealerRechargePaymentRequest[[0]]"/>
+   </function>
+</view_states>

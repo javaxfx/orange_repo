@@ -1,0 +1,1718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config">
+    <con:coreEntry>
+        <con:binding type="Any XML"/>
+        <oper:operations>
+            <oper:monitoring enabled="true" aggregationInterval="1440" level="pipeline"/>
+            <oper:tracingEnabled>false</oper:tracingEnabled>
+            <oper:reporting>true</oper:reporting>
+            <oper:logging enabled="true" level="debug"/>
+            <oper:sla-alerting enabled="true" level="normal"/>
+            <oper:pipeline-alerting enabled="true" level="normal"/>
+        </oper:operations>
+        <con:xqConfiguration>
+            <con:snippetVersion>1.0</con:snippetVersion>
+        </con:xqConfiguration>
+    </con:coreEntry>
+    <con:router xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/services/security/config" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config">
+        <con:pipeline type="response" name="Recharge_PipelinePairNode_response" errorHandler="_onErrorHandler-5655082927972704040--41d9cedd.14d9a0e083d.-7c33">
+            <con:stage name="Resp">
+                <con:context xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config"/>
+                <con:actions xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config">
+                    <con4:assign varName="currentDatetime" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con6="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7df4</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>&lt;a>{fn:current-dateTime()}&lt;/a></con2:xqueryText>
+                        </con3:expr>
+                    </con4:assign>
+                    <con6:report xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7df1</con2:id>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;ReportResponse>
+{$body}
+&lt;/ReportResponse></con2:xqueryText>
+                        </con1:expr>
+                        <con1:labels>
+                            <con1:key>messageId</con1:key>
+                            <con1:varName>msgId</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>startDateTime</con1:key>
+                            <con1:varName>currentDatetime</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>ipXForwardedFor</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+(./ctx:transport/ctx:request/http:client-address)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>operationName</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:service/ctx:operation) 
+then (./ctx:service/ctx:operation)
+else (./ctx:transport/ctx:request/http:http-method)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>type</con1:key>
+                            <con1:varName>type</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>MSISDN1</con1:key>
+                            <con1:varName>MSISDN1</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                    </con6:report>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="error" name="_onErrorHandler-5655082927972704040--41d9cedd.14d9a0e083d.-7c33">
+            <con:stage name="Output_Transformation_Error" id="_StageId-N3f575eff.644d6b21.0.162cde14cc0.N7bbc" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con6="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                <con:context>
+                    <con2:userNsDecl prefix="ptinws" namespace="http://www.ptinovacao.pt/ws/"/>
+                </con:context>
+                <con:actions>
+                    <con4:assign varName="currentDatetime" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7bbb</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>&lt;a>{fn:current-dateTime()}&lt;/a></con2:xqueryText>
+                        </con3:expr>
+                    </con4:assign>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7bba</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+data($currentDatetime), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$fault}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Response][Fault]</con6:message>
+                    </con6:log>
+                    <con3:assign varName="ErrorTrace" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7bb9</con1:id>
+                        <con3:expr>
+                            <con1:xqueryText><![CDATA[<soap-env:Fault>
+         <faultcode>{fn:concat($fault/ctx:errorCode/text(), ' ', $body/soap-env:Fault/faultcode/text())}</faultcode>
+         <faultstring>{fn:concat($body/soap-env:Fault/faultstring/text(), ' ' , $fault/ctx:reason/text())}</faultstring>
+         <detail>
+			{$body/soap-env:Fault/detail/*} { $fault/ctx:location}
+         </detail>
+</soap-env:Fault>]]></con1:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7bb8</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$ErrorTrace}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Response][ErrorTrace]</con6:message>
+                    </con6:log>
+                    <con5:alert xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7bb7</con1:id>
+                        <con5:destination ref="Common/Resources/Alerts/Echange_AD"/>
+                        <con5:description>[Orange][zebra][Recharge_PS][Response][ErrorTrace]</con5:description>
+                        <con5:severity>critical</con5:severity>
+                        <con5:payload>
+                            <con1:xqueryText>$ErrorTrace</con1:xqueryText>
+                        </con5:payload>
+                    </con5:alert>
+                    <con1:report xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7bb6</con2:id>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;ReportResponseError>
+{$ErrorTrace}
+&lt;/ReportResponseError></con2:xqueryText>
+                        </con1:expr>
+                        <con1:labels>
+                            <con1:key>messageId</con1:key>
+                            <con1:varName>msgId</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>startDateTime</con1:key>
+                            <con1:varName>currentDatetime</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>ipXForwardedFor</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+(./ctx:transport/ctx:request/http:client-address)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>operationName</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:service/ctx:operation) 
+then (./ctx:service/ctx:operation)
+else (./ctx:transport/ctx:request/http:http-method)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>type</con1:key>
+                            <con1:varName>type</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>MSISDN1</con1:key>
+                            <con1:varName>MSISDN1</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                    </con1:report>
+                    <con6:replace varName="body" contents-only="true" xmlns:con6="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con2:id>_ActionId-5655082927972704040--41d9cedd.14d9a0e083d.-7bb4</con2:id>
+                        <con6:location>
+                            <con2:xpathText>.</con2:xpathText>
+                        </con6:location>
+                        <con6:expr>
+                            <con:xqueryText xmlns:con="http://www.bea.com/wli/sb/stages/config"><![CDATA[<COMMAND>
+			{$type}
+			<TXNSTATUS>12508</TXNSTATUS >
+			<MESSAGE>Problème de transformation du message Response</MESSAGE>
+</COMMAND>]]></con:xqueryText>
+                        </con6:expr>
+                    </con6:replace>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7bb1</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$body}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Response][Fault][Body after transformation]</con6:message>
+                    </con6:log>
+                    <con1:reply isError="false" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7bb0</con1:id>
+                    </con1:reply>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="request" name="Recharge_PipelinePairNode_request" errorHandler="_onErrorHandler-5655082927972704040--41d9cedd.14d9a0e083d.-7dd8">
+            <con:stage name="Req">
+                <con:context/>
+                <con:actions>
+                    <con3:assign varName="currentDatetime" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con6="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7fcd</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>&lt;a>{fn:current-dateTime()}&lt;/a></con2:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con3:assign varName="msgId" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con6="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7fca</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>&lt;a>{$messageID}&lt;/a></con2:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con8:assign varName="type" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con6="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con8="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7fc7</con2:id>
+                        <con3:expr>
+                            <con:xqueryText xmlns:con="http://www.bea.com/wli/sb/stages/config">&lt;TYPE>
+{fn:replace($body/COMMAND/TYPE
+,
+';', 
+'|\$/')}
+&lt;/TYPE></con:xqueryText>
+                        </con3:expr>
+                    </con8:assign>
+                    <con8:assign varName="MSISDN1" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con6="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con8="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7fbe</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>&lt;MSISDN1>
+{fn:replace($body/COMMAND/MSISDN
+,
+';', 
+'|\$/')}
+&lt;/MSISDN1></con2:xqueryText>
+                        </con3:expr>
+                    </con8:assign>
+                    <con1:log xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7fc4</con2:id>
+                        <con1:logLevel>info</con1:logLevel>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+data($currentDatetime), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$body}
+&lt;/root></con2:xqueryText>
+                        </con1:expr>
+                        <con1:message>[Orange][zebra][Recharge_PS][Entry]</con1:message>
+                    </con1:log>
+                    <con1:report xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7fc1</con2:id>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;ReportRequest>
+{$body}
+&lt;/ReportRequest></con2:xqueryText>
+                        </con1:expr>
+                        <con1:labels>
+                            <con1:key>messageId</con1:key>
+                            <con1:varName>msgId</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>startDateTime</con1:key>
+                            <con1:varName>currentDatetime</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>ipXForwardedFor</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+(./ctx:transport/ctx:request/http:client-address)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>operationName</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:service/ctx:operation) 
+then (./ctx:service/ctx:operation)
+else (./ctx:transport/ctx:request/http:http-method)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>type</con1:key>
+                            <con1:varName>type</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>MSISDN1</con1:key>
+                            <con1:varName>MSISDN1</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                    </con1:report>
+                    <con8:assign varName="request" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con6="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con8="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7d7d</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>$body</con2:xqueryText>
+                        </con3:expr>
+                    </con8:assign>
+                    <con6:ifThenElse xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con6="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-5655082927972704040--41d9cedd.14d9a0e083d.-7dde</con2:id>
+                        <con6:case>
+                            <con6:condition>
+                                <con2:xqueryConditionExpr>
+                                    <con2:compExpr operator="=">
+                                        <con2:leftPath>fn:string($body/COMMAND/TYPE[1])</con2:leftPath>
+                                        <con2:rightPath>"EXRCTRFREQ"</con2:rightPath>
+                                    </con2:compExpr>
+                                </con2:xqueryConditionExpr>
+                            </con6:condition>
+                            <con6:actions/>
+                        </con6:case>
+                        <con6:default>
+                            <con6:assign varName="code">
+                                <con2:id>_ActionId-5655082927972704040--41d9cedd.14d9a0e083d.-7dda</con2:id>
+                                <con6:expr>
+                                    <con2:xqueryText>"001"</con2:xqueryText>
+                                </con6:expr>
+                            </con6:assign>
+                            <con1:Error xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config">
+                                <con2:id>_ActionId-5655082927972704040--41d9cedd.14d9a0e083d.-7dd9</con2:id>
+                                <con1:errCode>001</con1:errCode>
+                                <con1:message>Message reçu non valide, le champ Type doit contenir la valeur de Recharge</con1:message>
+                            </con1:Error>
+                        </con6:default>
+                    </con6:ifThenElse>
+                </con:actions>
+            </con:stage>
+            <con:stage name="ETU_Client_REQ_V2" errorHandler="_onErrorHandler-7497839100883790619-67e42bf.14fb14276b2.-7d73">
+                <con:context>
+                    <con2:userNsDecl namespace="http://medipps/EPaymentWS/ETUClientLocation" prefix="etuc"/>
+                    <con2:userNsDecl namespace="java:com.edinfor.pps.dto" prefix="java"/>
+                </con:context>
+                <con:actions>
+                    <con4:ifThenElse>
+                        <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7db2</con2:id>
+                        <con4:case>
+                            <con4:condition>
+                                <con2:xqueryConditionExpr>
+                                    <con2:compExpr operator="=">
+                                        <con2:leftPath>data($body/COMMAND/MSISDN)</con2:leftPath>
+                                        <con2:rightPath>""</con2:rightPath>
+                                    </con2:compExpr>
+                                </con2:xqueryConditionExpr>
+                            </con4:condition>
+                            <con4:actions>
+                                <con4:assign varName="rechargeWeb">
+                                    <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7db1</con2:id>
+                                    <con4:expr>
+                                        <con2:xqueryText>'1'</con2:xqueryText>
+                                    </con4:expr>
+                                </con4:assign>
+                            </con4:actions>
+                        </con4:case>
+                        <con4:default>
+                            <con1:assign varName="req" xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con5="http://www.bea.com/wli/sb/services/security/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config">
+                                <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7db0</con2:id>
+                                <con1:expr>
+                                    <con:xqueryTransform xmlns:con="http://www.bea.com/wli/sb/stages/config">
+                                        <con:resource ref="zebra/Ressources/XQueries/transformationETUReq_v2"/>
+                                        <con:param name="msisdn">
+                                            <con:path>fn:string($body/COMMAND/MSISDN)</con:path>
+                                        </con:param>
+                                    </con:xqueryTransform>
+                                </con1:expr>
+                            </con1:assign>
+                            <con1:wsCallout xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con5="http://www.bea.com/wli/sb/services/security/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config">
+                                <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7daa</con2:id>
+                                <con1:service ref="zebra/Proxies/identifier_INZebraBouchon" xsi:type="con:PipelineRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                                <con1:operation>etuClientLocation</con1:operation>
+                                <con1:request>
+                                    <con1:body>req</con1:body>
+                                </con1:request>
+                                <con1:response>
+                                    <con1:body>res</con1:body>
+                                </con1:response>
+                                <con1:requestTransform>
+                                    <con1:log xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7f89</con2:id>
+                                        <con1:logLevel>info</con1:logLevel>
+                                        <con1:expr>
+                                            <con2:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$req}
+&lt;/root></con2:xqueryText>
+                                        </con1:expr>
+                                        <con1:message>[Orange][zebra][Recharge_PS][Request][Callout][etuClientLocation][Input body]</con1:message>
+                                    </con1:log>
+                                </con1:requestTransform>
+                                <con1:responseTransform>
+                                    <con1:log xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7f55</con2:id>
+                                        <con1:logLevel>info</con1:logLevel>
+                                        <con1:expr>
+                                            <con2:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$res}
+&lt;/root></con2:xqueryText>
+                                        </con1:expr>
+                                        <con1:message>[Orange][zebra][Recharge_PS][Request][Callout][etuClientLocation][Output body]</con1:message>
+                                    </con1:log>
+                                </con1:responseTransform>
+                            </con1:wsCallout>
+                        </con4:default>
+                    </con4:ifThenElse>
+                </con:actions>
+            </con:stage>
+            <con:stage name="ETU_Req2" errorHandler="_onErrorHandler-7497839100883790619-67e42bf.14fb14276b2.-7bcd">
+                <con:context>
+                    <con2:userNsDecl namespace="java:com.edinfor.pps.dto" prefix="java"/>
+                </con:context>
+                <con:actions>
+                    <con1:ifThenElse xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con5="http://www.bea.com/wli/sb/services/security/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7c29</con2:id>
+                        <con1:case>
+                            <con1:condition>
+                                <con2:xqueryConditionExpr>
+                                    <con2:boolExpr operator="or">
+                                        <con2:compExpr operator="=">
+                                            <con2:leftPath>number($res//java:clientLocation)</con2:leftPath>
+                                            <con2:rightPath>number(0)</con2:rightPath>
+                                        </con2:compExpr>
+                                        <con2:compExpr operator="=">
+                                            <con2:leftPath>number($res//java:clientLocation)</con2:leftPath>
+                                            <con2:rightPath>number(1)</con2:rightPath>
+                                        </con2:compExpr>
+                                        <con2:compExpr operator="=">
+                                            <con2:leftPath>number(data($rechargeWeb))</con2:leftPath>
+                                            <con2:rightPath>number(1)</con2:rightPath>
+                                        </con2:compExpr>
+                                    </con2:boolExpr>
+                                </con2:xqueryConditionExpr>
+                            </con1:condition>
+                            <con1:actions/>
+                        </con1:case>
+                        <con1:default>
+                            <con1:assign varName="code">
+                                <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7c27</con2:id>
+                                <con1:expr>
+                                    <con2:xqueryText>"001"</con2:xqueryText>
+                                </con1:expr>
+                            </con1:assign>
+                            <con1:Error>
+                                <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7c26</con2:id>
+                                <con1:errCode>001</con1:errCode>
+                                <con1:message>Message reçu non valide, Merci d'indiquer les bonnes valeurs de la recharge</con1:message>
+                            </con1:Error>
+                        </con1:default>
+                    </con1:ifThenElse>
+                    <con1:assign varName="login" xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con5="http://www.bea.com/wli/sb/services/security/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7be9</con2:id>
+                        <con1:expr>
+                            <con2:xqueryText>data($inbound/ctx:transport/ctx:request/http:query-string)</con2:xqueryText>
+                        </con1:expr>
+                    </con1:assign>
+                    <con1:log xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                        <con2:id>_ActionId-N53e51fff.3a38269d.0.16fa480c943.N7f34</con2:id>
+                        <con1:logLevel>info</con1:logLevel>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+data($currentDatetime), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$body}
+&lt;/root></con2:xqueryText>
+                        </con1:expr>
+                        <con1:message>[Orange][zebra][Recharge_PS][Request][Body before transformation]</con1:message>
+                    </con1:log>
+                    <con1:replace contents-only="true" varName="body" xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con5="http://www.bea.com/wli/sb/services/security/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-N53e51fff.3a38269d.0.16fa480c943.N7f6b</con2:id>
+                        <con1:location>
+                            <con2:xpathText>./COMMAND/EXTREFNUM</con2:xpathText>
+                        </con1:location>
+                        <con1:expr>
+                            <con2:xqueryText>'null'</con2:xqueryText>
+                        </con1:expr>
+                    </con1:replace>
+                    <con1:log xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                        <con2:id>_ActionId-N53e51fff.3a38269d.0.16fa480c943.N7f68</con2:id>
+                        <con1:logLevel>info</con1:logLevel>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+data($currentDatetime), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$body}
+&lt;/root></con2:xqueryText>
+                        </con1:expr>
+                        <con1:message>[Orange][zebra][Recharge_PS][Request][Body after transformation]</con1:message>
+                    </con1:log>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="error" name="_onErrorHandler-7497839100883790619-67e42bf.14fb14276b2.-7bcd">
+            <con:stage name="ETU_Req_Error" id="_StageId-N3f575eff.644d6b21.0.162cde14cc0.N79ef" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con6="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                <con:context>
+                    <con2:userNsDecl prefix="java" namespace="java:com.edinfor.pps.dto"/>
+                    <con2:userNsDecl prefix="ptinws" namespace="http://www.ptinovacao.pt/ws/"/>
+                </con:context>
+                <con:actions>
+                    <con4:assign varName="currentDatetime" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N79ee</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>&lt;a>{fn:current-dateTime()}&lt;/a></con2:xqueryText>
+                        </con3:expr>
+                    </con4:assign>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N79ed</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+data($currentDatetime), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$fault}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Request][Fault]</con6:message>
+                    </con6:log>
+                    <con3:assign varName="ErrorTrace" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N79ec</con1:id>
+                        <con3:expr>
+                            <con1:xqueryText><![CDATA[<soap-env:Fault>
+         <faultcode>{fn:concat($fault/ctx:errorCode/text(), ' ', $body/soap-env:Fault/faultcode/text())}</faultcode>
+         <faultstring>{fn:concat($body/soap-env:Fault/faultstring/text(), ' ' , $fault/ctx:reason/text())}</faultstring>
+         <detail>
+			{$body/soap-env:Fault/detail/*} { $fault/ctx:location}
+         </detail>
+</soap-env:Fault>]]></con1:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N79eb</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$ErrorTrace}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Request][ErrorTrace]</con6:message>
+                    </con6:log>
+                    <con5:alert xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N79ea</con1:id>
+                        <con5:destination ref="Common/Resources/Alerts/Echange_AD"/>
+                        <con5:description>[Orange][zebra][Recharge_PS][Request][ErrorTrace]</con5:description>
+                        <con5:severity>critical</con5:severity>
+                        <con5:payload>
+                            <con1:xqueryText>$ErrorTrace</con1:xqueryText>
+                        </con5:payload>
+                    </con5:alert>
+                    <con1:report xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N79e9</con2:id>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;ReportRequestError>
+{$ErrorTrace}
+&lt;/ReportRequestError></con2:xqueryText>
+                        </con1:expr>
+                        <con1:labels>
+                            <con1:key>messageId</con1:key>
+                            <con1:varName>msgId</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>startDateTime</con1:key>
+                            <con1:varName>currentDatetime</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>ipXForwardedFor</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+(./ctx:transport/ctx:request/http:client-address)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>operationName</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:service/ctx:operation) 
+then (./ctx:service/ctx:operation)
+else (./ctx:transport/ctx:request/http:http-method)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>type</con1:key>
+                            <con1:varName>type</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>MSISDN1</con1:key>
+                            <con1:varName>MSISDN1</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                    </con1:report>
+                    <con7:ifThenElse xmlns:con6="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con5="http://www.bea.com/wli/sb/services/security/config" xmlns:con3="http://www.bea.com/wli/sb/services/security/config" xmlns:con7="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7b0b</con2:id>
+                        <con6:case id="_BranchId-N3f575eff.644d6b21.0.162cde14cc0.N796d">
+                            <con6:condition>
+                                <con2:xqueryConditionExpr>
+                                    <con2:compExpr operator="=">
+                                        <con2:leftPath>data($code)</con2:leftPath>
+                                        <con2:rightPath>"001"</con2:rightPath>
+                                    </con2:compExpr>
+                                </con2:xqueryConditionExpr>
+                            </con6:condition>
+                            <con6:actions>
+                                <con6:replace varName="body" contents-only="true">
+                                    <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7b0a</con2:id>
+                                    <con6:location>
+                                        <con2:xpathText>.</con2:xpathText>
+                                    </con6:location>
+                                    <con6:expr>
+                                        <con2:xqueryText><![CDATA[<COMMAND>
+			<TXNSTATUS>{number($res//java:returnCode)}</TXNSTATUS >
+			<MESSAGE>{data($res//java:returnMessage)}</MESSAGE>
+</COMMAND>]]></con2:xqueryText>
+                                    </con6:expr>
+                                </con6:replace>
+                            </con6:actions>
+                        </con6:case>
+                        <con6:default>
+                            <con6:replace varName="body" contents-only="true">
+                                <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7b09</con2:id>
+                                <con6:location>
+                                    <con2:xpathText>.</con2:xpathText>
+                                </con6:location>
+                                <con6:expr>
+                                    <con2:xqueryText><![CDATA[<COMMAND>
+			<TXNSTATUS>12507</TXNSTATUS >
+			<MESSAGE>Problème de transformation du message Request</MESSAGE>
+</COMMAND>]]></con2:xqueryText>
+                                </con6:expr>
+                            </con6:replace>
+                        </con6:default>
+                    </con7:ifThenElse>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N79e4</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$body}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Request][Fault][Body after transformation]</con6:message>
+                    </con6:log>
+                    <con1:reply isError="false" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N79e3</con1:id>
+                    </con1:reply>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="error" name="_onErrorHandler-5655082927972704040--41d9cedd.14d9a0e083d.-7b09">
+            <con:stage name="Invocation_Error" id="_StageId-N3f575eff.644d6b21.0.162cde14cc0.N7880" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con6="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                <con:context>
+                    <con2:userNsDecl prefix="ptinws" namespace="http://www.ptinovacao.pt/ws/"/>
+                </con:context>
+                <con:actions>
+                    <con4:assign varName="currentDatetime" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N787f</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>&lt;a>{fn:current-dateTime()}&lt;/a></con2:xqueryText>
+                        </con3:expr>
+                    </con4:assign>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N787e</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+data($currentDatetime), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$fault}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Invocation][Fault]</con6:message>
+                    </con6:log>
+                    <con3:assign varName="ErrorTrace" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N787d</con1:id>
+                        <con3:expr>
+                            <con1:xqueryText><![CDATA[<soap-env:Fault>
+         <faultcode>{fn:concat($fault/ctx:errorCode/text(), ' ', $body/soap-env:Fault/faultcode/text())}</faultcode>
+         <faultstring>{fn:concat($body/soap-env:Fault/faultstring/text(), ' ' , $fault/ctx:reason/text())}</faultstring>
+         <detail>
+			{$body/soap-env:Fault/detail/*} { $fault/ctx:location}
+         </detail>
+</soap-env:Fault>]]></con1:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N787c</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$ErrorTrace}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Invocation][ErrorTrace]</con6:message>
+                    </con6:log>
+                    <con5:alert xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N787b</con1:id>
+                        <con5:destination ref="Common/Resources/Alerts/Echange_AD"/>
+                        <con5:description>[Orange][zebra][Recharge_PS][Invocation][ErrorTrace]</con5:description>
+                        <con5:severity>critical</con5:severity>
+                        <con5:payload>
+                            <con1:xqueryText>$ErrorTrace</con1:xqueryText>
+                        </con5:payload>
+                    </con5:alert>
+                    <con1:report xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N787a</con2:id>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;ReportInvocationError>
+{$ErrorTrace}
+&lt;/ReportInvocationError></con2:xqueryText>
+                        </con1:expr>
+                        <con1:labels>
+                            <con1:key>messageId</con1:key>
+                            <con1:varName>msgId</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>startDateTime</con1:key>
+                            <con1:varName>currentDatetime</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>ipXForwardedFor</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+(./ctx:transport/ctx:request/http:client-address)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>operationName</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:service/ctx:operation) 
+then (./ctx:service/ctx:operation)
+else (./ctx:transport/ctx:request/http:http-method)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>type</con1:key>
+                            <con1:varName>type</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>MSISDN1</con1:key>
+                            <con1:varName>MSISDN1</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                    </con1:report>
+                    <con6:replace varName="body" contents-only="true" xmlns:con6="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con2:id>_ActionId-5655082927972704040--41d9cedd.14d9a0e083d.-7ac7</con2:id>
+                        <con6:location>
+                            <con2:xpathText>.</con2:xpathText>
+                        </con6:location>
+                        <con6:expr>
+                            <con:xqueryText xmlns:con="http://www.bea.com/wli/sb/stages/config"><![CDATA[<COMMAND>
+			{$type}
+			<TXNSTATUS>12501</TXNSTATUS >
+			<MESSAGE>Erreur Metier du service</MESSAGE>
+</COMMAND>]]></con:xqueryText>
+                        </con6:expr>
+                    </con6:replace>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7878</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$body}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Invocation][Fault][Body after transformation]</con6:message>
+                    </con6:log>
+                    <con1:reply isError="false" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7877</con1:id>
+                    </con1:reply>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="error" name="_onErrorHandler-5655082927972704040--41d9cedd.14d9a0e083d.-7dd8">
+            <con:stage name="ETU_Req_Error" id="_StageId-N3f575eff.644d6b21.0.162cde14cc0.N7cf1" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con6="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                <con:context>
+                    <con2:userNsDecl prefix="ptinws" namespace="http://www.ptinovacao.pt/ws/"/>
+                </con:context>
+                <con:actions>
+                    <con4:assign varName="currentDatetime" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7cf0</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>&lt;a>{fn:current-dateTime()}&lt;/a></con2:xqueryText>
+                        </con3:expr>
+                    </con4:assign>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7cef</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+data($currentDatetime), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$fault}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Request][Fault]</con6:message>
+                    </con6:log>
+                    <con3:assign varName="ErrorTrace" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7cee</con1:id>
+                        <con3:expr>
+                            <con1:xqueryText><![CDATA[<soap-env:Fault>
+         <faultcode>{fn:concat($fault/ctx:errorCode/text(), ' ', $body/soap-env:Fault/faultcode/text())}</faultcode>
+         <faultstring>{fn:concat($body/soap-env:Fault/faultstring/text(), ' ' , $fault/ctx:reason/text())}</faultstring>
+         <detail>
+			{$body/soap-env:Fault/detail/*} { $fault/ctx:location}
+         </detail>
+</soap-env:Fault>]]></con1:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7ced</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$ErrorTrace}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Request][ErrorTrace]</con6:message>
+                    </con6:log>
+                    <con5:alert xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7cec</con1:id>
+                        <con5:destination ref="Common/Resources/Alerts/Echange_AD"/>
+                        <con5:description>[Orange][zebra][Recharge_PS][Request][ErrorTrace]</con5:description>
+                        <con5:severity>critical</con5:severity>
+                        <con5:payload>
+                            <con1:xqueryText>$ErrorTrace</con1:xqueryText>
+                        </con5:payload>
+                    </con5:alert>
+                    <con1:report xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7ceb</con2:id>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;ReportRequestError>
+{$ErrorTrace}
+&lt;/ReportRequestError></con2:xqueryText>
+                        </con1:expr>
+                        <con1:labels>
+                            <con1:key>messageId</con1:key>
+                            <con1:varName>msgId</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>startDateTime</con1:key>
+                            <con1:varName>currentDatetime</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>ipXForwardedFor</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+(./ctx:transport/ctx:request/http:client-address)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>operationName</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:service/ctx:operation) 
+then (./ctx:service/ctx:operation)
+else (./ctx:transport/ctx:request/http:http-method)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>type</con1:key>
+                            <con1:varName>type</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>MSISDN1</con1:key>
+                            <con1:varName>MSISDN1</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                    </con1:report>
+                    <con6:ifThenElse xmlns:con6="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con2:id>_ActionId-5655082927972704040--41d9cedd.14d9a0e083d.-7ce0</con2:id>
+                        <con6:case id="_BranchId-N3f575eff.644d6b21.0.162cde14cc0.N7c79">
+                            <con6:condition>
+                                <con2:xqueryConditionExpr>
+                                    <con2:compExpr operator="=">
+                                        <con2:leftPath>data($code)</con2:leftPath>
+                                        <con2:rightPath>"001"</con2:rightPath>
+                                    </con2:compExpr>
+                                </con2:xqueryConditionExpr>
+                            </con6:condition>
+                            <con6:actions>
+                                <con6:replace varName="body" contents-only="true">
+                                    <con2:id>_ActionId-5655082927972704040--41d9cedd.14d9a0e083d.-7cdf</con2:id>
+                                    <con6:location>
+                                        <con2:xpathText>.</con2:xpathText>
+                                    </con6:location>
+                                    <con6:expr>
+                                        <con2:xqueryText><![CDATA[<COMMAND>
+			{$type}
+			<TXNSTATUS>001</TXNSTATUS >
+			<MESSAGE>Message reçu non valide, le champ Type doit contenir la valeur de la recharge</MESSAGE>
+</COMMAND>]]></con2:xqueryText>
+                                    </con6:expr>
+                                </con6:replace>
+                            </con6:actions>
+                        </con6:case>
+                        <con6:default>
+                            <con6:replace varName="body" contents-only="true">
+                                <con2:id>_ActionId-5655082927972704040--41d9cedd.14d9a0e083d.-7cde</con2:id>
+                                <con6:location>
+                                    <con2:xpathText>.</con2:xpathText>
+                                </con6:location>
+                                <con6:expr>
+                                    <con2:xqueryText><![CDATA[<COMMAND>
+			{$type}
+			<TXNSTATUS>12507</TXNSTATUS >
+			<MESSAGE>Problème de transformation request</MESSAGE>
+</COMMAND>]]></con2:xqueryText>
+                                </con6:expr>
+                            </con6:replace>
+                        </con6:default>
+                    </con6:ifThenElse>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7ce6</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$body}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Request][Fault][Body after transformation]</con6:message>
+                    </con6:log>
+                    <con1:reply isError="false" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7ce5</con1:id>
+                    </con1:reply>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="error" name="_onErrorHandler-7497839100883790619-67e42bf.14fb14276b2.-7d73">
+            <con:stage name="ETU_Req_v2_Error" id="_StageId-N3f575eff.644d6b21.0.162cde14cc0.N7ac0" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con6="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                <con:context>
+                    <con2:userNsDecl prefix="ptinws" namespace="http://www.ptinovacao.pt/ws/"/>
+                </con:context>
+                <con:actions>
+                    <con4:assign varName="currentDatetime" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7abf</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>&lt;a>{fn:current-dateTime()}&lt;/a></con2:xqueryText>
+                        </con3:expr>
+                    </con4:assign>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7abe</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+data($currentDatetime), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$fault}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Request][Fault]</con6:message>
+                    </con6:log>
+                    <con3:assign varName="ErrorTrace" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7abd</con1:id>
+                        <con3:expr>
+                            <con1:xqueryText><![CDATA[<soap-env:Fault>
+         <faultcode>{fn:concat($fault/ctx:errorCode/text(), ' ', $body/soap-env:Fault/faultcode/text())}</faultcode>
+         <faultstring>{fn:concat($body/soap-env:Fault/faultstring/text(), ' ' , $fault/ctx:reason/text())}</faultstring>
+         <detail>
+			{$body/soap-env:Fault/detail/*} { $fault/ctx:location}
+         </detail>
+</soap-env:Fault>]]></con1:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7abc</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$ErrorTrace}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Request][ErrorTrace]</con6:message>
+                    </con6:log>
+                    <con5:alert xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7abb</con1:id>
+                        <con5:destination ref="Common/Resources/Alerts/Echange_AD"/>
+                        <con5:description>[Orange][zebra][Recharge_PS][Request][ErrorTrace]</con5:description>
+                        <con5:severity>critical</con5:severity>
+                        <con5:payload>
+                            <con1:xqueryText>$ErrorTrace</con1:xqueryText>
+                        </con5:payload>
+                    </con5:alert>
+                    <con1:report xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config">
+                        <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7aba</con2:id>
+                        <con1:expr>
+                            <con2:xqueryText>&lt;ReportRequestError>
+{$ErrorTrace}
+&lt;/ReportRequestError></con2:xqueryText>
+                        </con1:expr>
+                        <con1:labels>
+                            <con1:key>messageId</con1:key>
+                            <con1:varName>msgId</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>startDateTime</con1:key>
+                            <con1:varName>currentDatetime</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>ipXForwardedFor</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+(./ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+(./ctx:transport/ctx:request/http:client-address)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>operationName</con1:key>
+                            <con1:varName>inbound</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>if(./ctx:service/ctx:operation) 
+then (./ctx:service/ctx:operation)
+else (./ctx:transport/ctx:request/http:http-method)</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>type</con1:key>
+                            <con1:varName>type</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                        <con1:labels>
+                            <con1:key>MSISDN1</con1:key>
+                            <con1:varName>MSISDN1</con1:varName>
+                            <con1:value>
+                                <con2:xpathText>.</con2:xpathText>
+                            </con1:value>
+                        </con1:labels>
+                    </con1:report>
+                    <con7:replace varName="body" contents-only="true" xmlns:con6="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con5="http://www.bea.com/wli/sb/services/security/config" xmlns:con3="http://www.bea.com/wli/sb/services/security/config" xmlns:con7="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7cf4</con2:id>
+                        <con6:location>
+                            <con2:xpathText>.</con2:xpathText>
+                        </con6:location>
+                        <con6:expr>
+                            <con2:xqueryText><![CDATA[<COMMAND>
+			<TXNSTATUS>001</TXNSTATUS >
+			<MESSAGE>Erreur d'invocation de la vérification de la location </MESSAGE>
+</COMMAND>]]></con2:xqueryText>
+                        </con6:expr>
+                    </con7:replace>
+                    <con6:log xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con7="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                        <con3:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7ab5</con3:id>
+                        <con6:logLevel>error</con6:logLevel>
+                        <con6:expr>
+                            <con3:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$body}
+&lt;/root></con3:xqueryText>
+                        </con6:expr>
+                        <con6:message>[Orange][zebra][Recharge_PS][Request][Fault][Body after transformation]</con6:message>
+                    </con6:log>
+                    <con1:reply isError="false" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                        <con1:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7ab4</con1:id>
+                    </con1:reply>
+                </con:actions>
+            </con:stage>
+            <con:stage name="2">
+                <con:context xmlns:con5="http://www.bea.com/wli/sb/services/security/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+                    <con1:varNsDecl namespace="http://medipps/EPaymentWS/ETUClientLocation" prefix="etuc" xmlns:con1="http://www.bea.com/wli/sb/stages/config"/>
+                    <con1:varNsDecl namespace="java:com.edinfor.pps.dto" prefix="java" xmlns:con1="http://www.bea.com/wli/sb/stages/config"/>
+                </con:context>
+                <con:actions xmlns:con5="http://www.bea.com/wli/sb/services/security/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config"/>
+            </con:stage>
+        </con:pipeline>
+        <con:flow>
+            <con:pipeline-node name="Recharge_PipelinePairNode">
+                <con:request>Recharge_PipelinePairNode_request</con:request>
+                <con:response>Recharge_PipelinePairNode_response</con:response>
+            </con:pipeline-node>
+            <con:route-node name="RechargeRouteNode" error-handler="_onErrorHandler-5655082927972704040--41d9cedd.14d9a0e083d.-7b09">
+                <con:context>
+                    <con2:userNsDecl namespace="java:com.edinfor.pps.dto" prefix="java"/>
+                    <con2:userNsDecl namespace="http://www.ptinovacao.pt/ws/" prefix="ptinws"/>
+                </con:context>
+                <con:actions>
+                    <con4:ifThenElse>
+                        <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7ae3</con2:id>
+                        <con4:case>
+                            <con4:condition>
+                                <con2:xqueryConditionExpr>
+                                    <con2:boolExpr operator="or">
+                                        <con2:compExpr operator="=">
+                                            <con2:leftPath>number($res//java:clientLocation)</con2:leftPath>
+                                            <con2:rightPath>number(1)</con2:rightPath>
+                                        </con2:compExpr>
+                                        <con2:compExpr operator="=">
+                                            <con2:leftPath>number(data($rechargeWeb))</con2:leftPath>
+                                            <con2:rightPath>number(1)</con2:rightPath>
+                                        </con2:compExpr>
+                                    </con2:boolExpr>
+                                </con2:xqueryConditionExpr>
+                            </con4:condition>
+                            <con4:actions>
+                                <con1:route>
+                                    <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7aaa</con2:id>
+                                    <con1:service ref="Common/Proxies/Zebra_Local_PS" xsi:type="ref:ProxyRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                                    <con1:outboundTransform>
+                                        <con6:insert varName="outbound" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/alert/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con6="http://www.bea.com/wli/sb/stages/transform/config">
+                                            <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-7aa9</con2:id>
+                                            <con6:location>
+                                                <con2:xpathText>./ctx:transport/ctx:request</con2:xpathText>
+                                            </con6:location>
+                                            <con6:where>last-child</con6:where>
+                                            <con6:expr>
+                                                <con2:xqueryText>&lt;http:query-string>{data($login)}&lt;/http:query-string></con2:xqueryText>
+                                            </con6:expr>
+                                        </con6:insert>
+                                        <con1:log xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                                            <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7dee</con2:id>
+                                            <con1:logLevel>info</con1:logLevel>
+                                            <con1:expr>
+                                                <con2:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+&lt;/root></con2:xqueryText>
+                                            </con1:expr>
+                                            <con1:message>[Orange][zebra][Recharge_PS][Route To  Zebra_BS][Request][Last]</con1:message>
+                                        </con1:log>
+                                    </con1:outboundTransform>
+                                    <con1:responseTransform>
+                                        <con1:log xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                                            <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7dba</con2:id>
+                                            <con1:logLevel>info</con1:logLevel>
+                                            <con1:expr>
+                                                <con2:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$body}
+&lt;/root></con2:xqueryText>
+                                            </con1:expr>
+                                            <con1:message>[Orange][zebra][Recharge_PS][Route To  Zebra_BS][Response][Body]</con1:message>
+                                        </con1:log>
+                                    </con1:responseTransform>
+                                </con1:route>
+                            </con4:actions>
+                        </con4:case>
+                        <con4:case>
+                            <con4:condition>
+                                <con2:xqueryConditionExpr>
+                                    <con2:compExpr operator="=">
+                                        <con2:leftPath>number($res//java:clientLocation)</con2:leftPath>
+                                        <con2:rightPath>number(0)</con2:rightPath>
+                                    </con2:compExpr>
+                                </con2:xqueryConditionExpr>
+                            </con4:condition>
+                            <con4:actions>
+                                <con1:route>
+                                    <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-79c5</con2:id>
+                                    <con1:service ref="Prepaiement/Proxies/DealerRechargePay_PS" xsi:type="ref:ProxyRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                                    <con1:operation>DealerRechargePayment</con1:operation>
+                                    <con1:outboundTransform>
+                                        <con1:replace varName="body" contents-only="true" xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con5="http://www.bea.com/wli/sb/services/security/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config">
+                                            <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-79bd</con2:id>
+                                            <con1:location>
+                                                <con2:xpathText>.</con2:xpathText>
+                                            </con1:location>
+                                            <con1:expr>
+                                                <con2:xqueryTransform>
+                                                    <con2:resource ref="zebra/Ressources/XQueries/ETUClientLocationTransformationRechargeReq"/>
+                                                    <con2:param name="Command">
+                                                        <con2:path>$body/COMMAND</con2:path>
+                                                    </con2:param>
+                                                </con2:xqueryTransform>
+                                            </con1:expr>
+                                        </con1:replace>
+                                        <con1:log xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                                            <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7db7</con2:id>
+                                            <con1:logLevel>info</con1:logLevel>
+                                            <con1:expr>
+                                                <con2:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$body}
+&lt;/root></con2:xqueryText>
+                                            </con1:expr>
+                                            <con1:message>[Orange][zebra][Recharge_PS][Route To  DealerRechargePay_PS][Request][Body after transformation]</con1:message>
+                                        </con1:log>
+                                    </con1:outboundTransform>
+                                    <con1:responseTransform>
+                                        <con1:log xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                                            <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7d83</con2:id>
+                                            <con1:logLevel>info</con1:logLevel>
+                                            <con1:expr>
+                                                <con2:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$body}
+&lt;/root></con2:xqueryText>
+                                            </con1:expr>
+                                            <con1:message>[Orange][zebra][Recharge_PS][Route To DealerRechargePay_PS][Response][Body before transformation]</con1:message>
+                                        </con1:log>
+                                        <con1:replace contents-only="true" varName="body" xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con5="http://www.bea.com/wli/sb/services/security/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config">
+                                            <con2:id>_ActionId-7497839100883790619-67e42bf.14fb14276b2.-79b4</con2:id>
+                                            <con1:location>
+                                                <con2:xpathText>.</con2:xpathText>
+                                            </con1:location>
+                                            <con1:expr>
+                                                <con2:xqueryText><![CDATA[<COMMAND> 
+	<TYPE>{data($request//TYPE)}</TYPE> 
+	<TXNSTATUS>{data($body/ptinws:DealerRechargePaymentReply/Result)}</TXNSTATUS> 
+	<DATE>{data($request//DATE)}</DATE> 
+	<EXTREFNUM>{data($request//EXTREFNUM)}</EXTREFNUM> 
+	<TXNID>{data($body/ptinws:DealerRechargePaymentReply/TransactionId)}</TXNID> 
+	<MESSAGE>{data($body/ptinws:DealerRechargePaymentReply/Description)}</MESSAGE> 
+</COMMAND>]]></con2:xqueryText>
+                                            </con1:expr>
+                                        </con1:replace>
+                                        <con1:log xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con6="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/services/security/config" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config" xmlns:aler="http://www.bea.com/wli/monitoring/alert">
+                                            <con2:id>_ActionId-N3f575eff.644d6b21.0.162cde14cc0.N7d80</con2:id>
+                                            <con1:logLevel>info</con1:logLevel>
+                                            <con1:expr>
+                                                <con2:xqueryText>&lt;root>
+&lt;log>
+{fn:concat(
+data($msgId), '|$/', 
+fn:current-dateTime(), '|$/', 
+if($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"])
+then
+($inbound/ctx:transport/ctx:request/tp:headers/tp:user-header[@name="X-Forwarded-For"]/@value)
+else
+($inbound/ctx:transport/ctx:request/http:client-address), '|$/', 
+$inbound/@name,'|$/',
+if($inbound/ctx:service/ctx:operation) 
+then ($inbound/ctx:service/ctx:operation)
+else (fn:concat($inbound/ctx:transport/ctx:request/http:http-method,' ',$inbound/ctx:transport/ctx:uri)), '|$/',
+'type=',fn:replace($type,'\|\$\/',';'),
+',MSISDN1=',fn:replace($MSISDN1,'\|\$\/',';')
+)}
+&lt;/log>
+{$body}
+&lt;/root></con2:xqueryText>
+                                            </con1:expr>
+                                            <con1:message>[Orange][zebra][Recharge_PS][Route To DealerRechargePay_PS][Response][Body after transformation]</con1:message>
+                                        </con1:log>
+                                    </con1:responseTransform>
+                                </con1:route>
+                            </con4:actions>
+                        </con4:case>
+                    </con4:ifThenElse>
+                </con:actions>
+            </con:route-node>
+        </con:flow>
+    </con:router>
+    <aler:alertRules xsi:nil="true" xmlns:aler="http://xmlns.oracle.com/servicebus/monitoring/alert" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+</con:pipelineEntry>

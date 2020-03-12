@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:businessServiceEntry xmlns:con="http://xmlns.oracle.com/servicebus/business/config" xmlns:oper="http://xmlns.oracle.com/servicebus/business/operations" xmlns:aler="http://xmlns.oracle.com/servicebus/monitoring/alert" xmlns:con1="http://xmlns.oracle.com/servicebus/monitoring/alert/condition">
+    <con:coreEntry>
+        <con2:binding type="Mixed" xsi:type="con:MixedBindingType" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con2="http://xmlns.oracle.com/servicebus/business/config">
+            <con:request type="Text"/>
+            <con:response type="Text"/>
+        </con2:binding>
+        <oper:operations enabled="true">
+            <oper:throttling enabled="false">
+                <oper:capacity>0</oper:capacity>
+                <oper:maxQueueLength>0</oper:maxQueueLength>
+                <oper:timeToLive>0</oper:timeToLive>
+            </oper:throttling>
+            <oper:monitoring enabled="true" aggregationInterval="1440"/>
+            <oper:sla-alerting enabled="true" level="normal"/>
+            <oper:resultCachingEnabled>true</oper:resultCachingEnabled>
+        </oper:operations>
+        <con:result-caching isSupported="false"/>
+        <con:xqConfiguration>
+            <ser:snippetVersion xmlns:ser="http://www.bea.com/wli/sb/services">1.0</ser:snippetVersion>
+        </con:xqConfiguration>
+    </con:coreEntry>
+    <con:endpointConfig xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <tran:provider-id>http</tran:provider-id>
+        <tran:inbound>false</tran:inbound>
+        <tran:URI weight="0">
+            <env:value>http://10.49.139.70:9898/pretups/C2SReceiver</env:value>
+        </tran:URI>
+        <tran:outbound-properties>
+            <tran:load-balancing-algorithm>round-robin</tran:load-balancing-algorithm>
+            <tran:retry-count>0</tran:retry-count>
+            <tran:retry-interval>30</tran:retry-interval>
+            <tran:retry-application-errors>true</tran:retry-application-errors>
+            <tran:delay-interval-configuration isEnabled="false">
+                <tran:delay-interval>0</tran:delay-interval>
+            </tran:delay-interval-configuration>
+        </tran:outbound-properties>
+        <tran:provider-specific xsi:type="http:HttpEndPointConfiguration">
+            <http:outbound-properties>
+                <http:request-method>POST</http:request-method>
+                <http:timeout>0</http:timeout>
+                <http:connection-timeout>0</http:connection-timeout>
+                <http:follow-redirects>false</http:follow-redirects>
+                <http:chunked-streaming-mode>false</http:chunked-streaming-mode>
+                <http:session-sctikiness enabled="false" session-id-name="JSESSIONID"/>
+            </http:outbound-properties>
+            <http:dispatch-policy>SBDefaultResponseWorkManager</http:dispatch-policy>
+            <http:compression>
+                <http:compression-support>false</http:compression-support>
+            </http:compression>
+        </tran:provider-specific>
+    </con:endpointConfig>
+    <aler:alertRules>
+        <aler:alertRule name="SLA_min-response-time_Zebra_BS" enabled="true">
+            <aler:description/>
+            <aler:startTime>05:00:00.000Z</aler:startTime>
+            <aler:endTime>23:00:00.000Z</aler:endTime>
+            <aler:frequency>every-time</aler:frequency>
+            <aler:severity>major</aler:severity>
+            <aler:stopProcessing>false</aler:stopProcessing>
+            <aler:condition aggregation-interval="240">
+                <con1:monCondExpr>
+                    <con1:function>min</con1:function>
+                    <con1:lhs>Transport.response-time</con1:lhs>
+                    <con1:operator>></con1:operator>
+                    <con1:rhs>30000</con1:rhs>
+                </con1:monCondExpr>
+            </aler:condition>
+            <aler1:alertDestination ref="Common/Resources/Alerts/Echange_AD" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aler1="http://xmlns.oracle.com/servicebus/monitoring/alert"/>
+            <aler:summary>SLA_min-response-time_Zebra_BS</aler:summary>
+        </aler:alertRule>
+        <aler:alertRule name="SLA_max-response-time_Zebra_BS" enabled="true">
+            <aler:description/>
+            <aler:startTime>05:00:00.000Z</aler:startTime>
+            <aler:endTime>23:00:00.000Z</aler:endTime>
+            <aler:frequency>every-time</aler:frequency>
+            <aler:severity>major</aler:severity>
+            <aler:stopProcessing>false</aler:stopProcessing>
+            <aler:condition aggregation-interval="240">
+                <con1:monCondExpr>
+                    <con1:function>max</con1:function>
+                    <con1:lhs>Transport.response-time</con1:lhs>
+                    <con1:operator>></con1:operator>
+                    <con1:rhs>60000</con1:rhs>
+                </con1:monCondExpr>
+            </aler:condition>
+            <aler1:alertDestination ref="Common/Resources/Alerts/Echange_AD" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aler1="http://xmlns.oracle.com/servicebus/monitoring/alert"/>
+            <aler:summary>SLA_max-response-time_Zebra_BS</aler:summary>
+        </aler:alertRule>
+        <aler:alertRule name="SLA_average-response-time_Zebra_BS" enabled="true">
+            <aler:description/>
+            <aler:startTime>05:00:00.000Z</aler:startTime>
+            <aler:endTime>23:00:00.000Z</aler:endTime>
+            <aler:frequency>every-time</aler:frequency>
+            <aler:severity>major</aler:severity>
+            <aler:stopProcessing>false</aler:stopProcessing>
+            <aler:condition aggregation-interval="240">
+                <con1:monCondExpr>
+                    <con1:function>average</con1:function>
+                    <con1:lhs>Transport.response-time</con1:lhs>
+                    <con1:operator>></con1:operator>
+                    <con1:rhs>45000</con1:rhs>
+                </con1:monCondExpr>
+            </aler:condition>
+            <aler1:alertDestination ref="Common/Resources/Alerts/Echange_AD" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aler1="http://xmlns.oracle.com/servicebus/monitoring/alert"/>
+            <aler:summary>SLA_average-response-time_Zebra_BS</aler:summary>
+        </aler:alertRule>
+        <aler:alertRule name="SLA_error-count_Zebra_BS" enabled="true">
+            <aler:description/>
+            <aler:startTime>05:00:00.000Z</aler:startTime>
+            <aler:endTime>23:00:00.000Z</aler:endTime>
+            <aler:frequency>every-time</aler:frequency>
+            <aler:severity>major</aler:severity>
+            <aler:stopProcessing>false</aler:stopProcessing>
+            <aler:condition aggregation-interval="240">
+                <con1:monCondExpr>
+                    <con1:function>count</con1:function>
+                    <con1:lhs>Transport.error-count</con1:lhs>
+                    <con1:operator>></con1:operator>
+                    <con1:rhs>10</con1:rhs>
+                </con1:monCondExpr>
+            </aler:condition>
+            <aler1:alertDestination ref="Common/Resources/Alerts/Echange_AD" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:aler="http://www.bea.com/wli/monitoring/alert" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aler1="http://xmlns.oracle.com/servicebus/monitoring/alert"/>
+            <aler:summary>SLA_error-count_Zebra_BS</aler:summary>
+        </aler:alertRule>
+    </aler:alertRules>
+</con:businessServiceEntry>

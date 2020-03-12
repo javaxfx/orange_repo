@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Oracle JAX-WS 2.1.5. --><xsd:schema xmlns:java="java:com.edinfor.pps.dto" xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" version="1.0" targetNamespace="java:com.edinfor.pps.dto">
+
+<xsd:complexType name="etuClientLocalReqDTO">
+<xsd:sequence>
+<xsd:element name="msisdn" type="xsd:string" nillable="true"/>
+</xsd:sequence>
+</xsd:complexType>
+
+<xsd:complexType name="etuClientLocalRespDTO">
+<xsd:sequence>
+<xsd:element name="returnCode" type="xsd:long" nillable="true"/>
+<xsd:element name="returnMessage" type="xsd:string" nillable="true"/>
+<xsd:element name="clientLocation" type="xsd:long" nillable="true"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:schema>
