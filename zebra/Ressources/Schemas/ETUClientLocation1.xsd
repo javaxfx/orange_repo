@@ -13,6 +13,9 @@
 <xsd:element name="returnMessage" type="xsd:string" nillable="true"/>
 <xsd:element name="clientLocation" type="xsd:long" nillable="true"/>
 <xsd:element name="clientInformation" type="xsd:string" nillable="true"/>
+
+<xsd:element name="clientInformation2" type="xsd:string" nillable="true"/>
+<xsd:element name="clientInformation3" type="xsd:string" nillable="true"/>
 </xsd:sequence>
 </xsd:complexType>
 </xsd:schema>
