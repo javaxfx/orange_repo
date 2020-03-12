@@ -11,6 +11,9 @@
             <oper:monitoring enabled="true" aggregationInterval="1440"/>
             <oper:sla-alerting enabled="true" level="normal"/>
         </oper:operations>
+        <ser:ws-policy>
+            <ser:binding-mode>no-policies</ser:binding-mode>
+        </ser:ws-policy>
         <ser:invoke ref="zebra/Proxies/Recharge_PS" xsi:type="con:PipelineRef" xmlns:con="http://www.bea.com/wli/sb/pipeline/config"/>
         <ser:xqConfiguration>
             <ser:snippetVersion>1.0</ser:snippetVersion>
@@ -23,12 +26,12 @@
             <env:value>/Recharge_PS</env:value>
         </tran:URI>
         <tran:inbound-properties/>
-        <tran:all-headers>true</tran:all-headers>
+        <tran:all-headers>false</tran:all-headers>
         <tran:provider-specific xsi:type="http:HttpEndPointConfiguration">
-            <http:inbound-properties>
-                <http:use-https>true</http:use-https>
-                <http:client-authentication xsi:type="http:HttpBasicAuthenticationType"/>
-            </http:inbound-properties>
+            <http:inbound-properties/>
+            <http:compression>
+                <http:compression-support>false</http:compression-support>
+            </http:compression>
         </tran:provider-specific>
     </ser:endpointConfig>
     <aler:alertRules>
